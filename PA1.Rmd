@@ -39,7 +39,7 @@ Now we'll see some data metrics. In this part of the process NA values are to be
 ```{r}
 library(dplyr)
 
-day_summary <- df %>% 
+day_summary <- df %>%  na.omit %>%
   group_by(date) %>% 
   summarise(steps_by_day = sum(steps,na.rm = TRUE))
 
@@ -59,7 +59,7 @@ median(day_summary$steps_by_day,na.rm = TRUE)
 Now we are interested in studding data averaged along the days. The first variable to view is the mean value of steps in each interval.
 
 ```{r}
-interval_summary <- df %>% 
+interval_summary <- df %>%  na.omit %>%
   group_by(interval) %>% 
   summarise(steps_by_interval = mean(steps,na.rm = TRUE))
 ```
@@ -110,13 +110,14 @@ hist(day_summary_f$steps_by_day,main = 'Steps by day\n(missing values filled)',x
 par(mfrow=c(1,1))
 ```
 
-It appears like mean and median values are enlarged in the new data frame (**dff**). Nevertheless, the maximum steps by day has not changed. We compare the summaries of original (**day_summary**) and filled data (**day_summary_f**) to see this in detail.
+It appears like there are subtle differences in the new (**dff**) data frame. Nevertheless, the maximum steps by day has not changed. We compare the summaries of original (**day_summary**) and filled data (**day_summary_f**) to see this in detail.
 
 ```{r}
 summary(day_summary$steps_by_day)
 summary(day_summary_f$steps_by_day)
 ```
 
+There are no significant changes in mean and median values.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
